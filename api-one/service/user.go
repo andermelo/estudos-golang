@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"myapp/config"
 	"myapp/graph/model"
 )
@@ -26,7 +27,9 @@ func UserCreate(ctx context.Context, input model.NewUser) (*model.User, error) {
 func UserUpdate(ctx context.Context, input model.UpdateUser) (*model.User, error) {
 	db := config.ConnectCockroach()
 	sqlDB, _ := db.DB()
+
 	defer sqlDB.Close()
+	db = db.Debug()
 
 	if err := db.Table("user").Where("id = ?", input.ID).Update("name", input.Name).Error; err != nil {
 		return nil, err
@@ -39,11 +42,18 @@ func UserUpdate(ctx context.Context, input model.UpdateUser) (*model.User, error
 func UserDelete(ctx context.Context, id int) (string, error) {
 	db := config.ConnectCockroach()
 	sqlDB, _ := db.DB()
+	db = db.Debug()
 	defer sqlDB.Close()
+
+	fmt.Println("ID do USUARIO:")
+
+	fmt.Println(id)
 
 	if err := db.Table("user").Where("id = ?", id).Delete(&model.User{}).Error; err != nil {
 		return "", err
 	}
+
+	fmt.Println("usuario deletado com sucesso")
 
 	return "Success", nil
 }

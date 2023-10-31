@@ -17,7 +17,7 @@ func ConnectCockroach() *gorm.DB {
 	dbDatabase := os.Getenv("DB_DATABASE")
 	// https://github.com/go-gorm/postgres
 	db, err := gorm.Open(postgres.New(postgres.Config{
-		DSN:                  fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Jakarta", dbHost, dbUser, dbPassword, dbDatabase, dbPort),
+		DSN:                  fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s TimeZone=Asia/Jakarta", dbHost, dbUser, dbPassword, dbDatabase, dbPort),
 		PreferSimpleProtocol: true, // disables implicit prepared statement usage
 	}), logger.InitConfig())
 
